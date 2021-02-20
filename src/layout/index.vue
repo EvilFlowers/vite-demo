@@ -51,7 +51,7 @@
           </el-tabs>
         </div>
       </div>
-      <div style="width: 100%; position: relative; height: 100%; overflow: auto;">
+      <div style="width: 100%; position: relative; height: calc(100% - 100px); overflow: auto;">
         <router-view/>
       </div>
     </div>

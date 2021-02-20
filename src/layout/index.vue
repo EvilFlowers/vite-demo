@@ -1,0 +1,220 @@
+<template>
+  <div class="admin-layout">
+    <div class="sidebar-container">
+      <el-scrollbar>
+        <el-menu>
+          <el-submenu index="1">
+            <template #title>
+              <i class="el-icon-location"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item-group>
+              <template #title>分组一</template>
+              <el-menu-item index="1-1">选项1</el-menu-item>
+              <el-menu-item index="1-2">选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title="分组2">
+              <el-menu-item index="1-3">选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index="1-4">
+              <template #title>选项4</template>
+              <el-menu-item index="1-4-1">选项1</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="2">
+            <i class="el-icon-menu"></i>
+            <template #title>导航二</template>
+          </el-menu-item>
+          <el-menu-item index="3" disabled>
+            <i class="el-icon-document"></i>
+            <template #title>导航三</template>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-setting"></i>
+            <template #title>导航四</template>
+          </el-menu-item>
+        </el-menu>
+      </el-scrollbar>
+    </div>
+    <div class="main-container">
+      <div class="layout-header">
+        <div class="nav">Navbar</div>
+        <div class="tabs">
+          <el-tabs v-model="editableTabsValue" type="card" closable class="tabs-content">
+            <el-tab-pane
+                v-for="item in editableTabs"
+                :key="item.name"
+                :label="item.title"
+                :name="item.name"
+            >
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+      </div>
+      <div style="width: 100%; position: relative; height: 100%; overflow: auto;">
+        <router-view/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { defineComponent, ref, reactive, onMounted } from 'vue'
+
+export default defineComponent({
+  name: 'Layout',
+  setup() {
+    const editableTabsValue = ref('2')
+    const editableTabs = reactive([
+      {
+        title: 'Tab 1',
+        name: '1',
+        content: 'Tab 1 content'
+      }, {
+        title: 'Tab 2',
+        name: '2',
+        content: 'Tab 2 content'
+      }, {
+        title: 'Tab 3',
+        name: '3',
+        content: 'Tab 3 content'
+      }, {
+        title: 'Tab 4',
+        name: '4',
+        content: 'Tab 4 content'
+      }, {
+        title: 'Tab 5',
+        name: '5',
+        content: 'Tab 5 content'
+      }, {
+        title: 'Tab 6',
+        name: '6',
+        content: 'Tab 6 content'
+      }, {
+        title: 'Tab 7',
+        name: '7',
+        content: 'Tab 7 content'
+      }, {
+        title: 'Tab 8',
+        name: '8',
+        content: 'Tab 8 content'
+      }, {
+        title: 'Tab 9',
+        name: '9',
+        content: 'Tab 9 content'
+      }, {
+        title: 'Tab 10',
+        name: '10',
+        content: 'Tab 10 content'
+      }
+    ])
+    onMounted(() => {
+      console.log(editableTabs)
+      console.log(editableTabsValue)
+    })
+    return {
+      editableTabsValue,
+      editableTabs,
+    }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+.admin-layout {
+  height: 100%;
+}
+
+.main-container {
+  margin-left: 220px;
+  height: 100%;
+  padding-top: 100px;
+}
+.nav {
+  height: 55px;
+  //background-color: #fff;
+}
+
+.layout-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 220px;
+  width: calc(100% - 220px);
+  overflow: hidden;
+  z-index: 2001;
+}
+
+.tabs {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
+  padding-right: 20px;
+  padding-left: 20px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  //background-color: #fff;
+  border-top: 1px solid #f6f6f6;
+
+  .tabs-content {
+    width: 100%;
+    height: 36px;
+
+    .el-tabs__nav-next, .el-tabs__nav-prev {
+      height: 36px;
+      line-height: 36px;
+    }
+
+    ::v-deep(.el-tabs__header) {
+      border-bottom: 0;
+
+      .el-tabs__nav {
+        border: 0;
+      }
+
+      .el-tabs__item {
+        height: 36px;
+        line-height: 36px;
+        border: 0;
+        margin-right: -18px;
+        padding: 0 30px;
+        text-align: center;
+
+        &.is-active, &:hover, &.is-active:hover {
+          mask: url(../assets/tab-background.png);
+          -webkit-mask: url(../assets/tab-background.png);
+          -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+          padding: 0 30px;
+        }
+
+        &.is-active, &.is-active:hover {
+          color: #1890ff;
+          background: #e8f4ff;
+        }
+
+        &:hover {
+          color: #515a6e;
+          background: #dee1e6;
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+
+
+.sidebar-container {
+  width: 220px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+}
+</style>

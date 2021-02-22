@@ -40,7 +40,7 @@
       <div class="layout-header">
         <div class="nav">Navbar</div>
         <div class="tabs">
-          <el-tabs v-model="editableTabsValue" type="card" closable class="tabs-content">
+          <el-tabs v-model="editableTabsValue" type="card" class="tabs-content" closable>
             <el-tab-pane
                 v-for="item in editableTabs"
                 :key="item.name"
@@ -59,7 +59,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, onMounted } from 'vue'
+// document.getElementById("tab-1").clientWidth
+import { defineComponent, ref, reactive, onMounted, nextTick } from 'vue'
 
 export default defineComponent({
   name: 'Layout',
@@ -108,15 +109,43 @@ export default defineComponent({
         content: 'Tab 10 content'
       }
     ])
-    onMounted(() => {
-      console.log(editableTabs)
-      console.log(editableTabsValue)
-    })
+    /*onMounted(() => {
+      nextTick(() => {
+        const elements = document.getElementsByClassName('el-tabs__item')
+        Array.prototype.forEach.call(elements, function (element) {
+          element.style.width = element.clientWidth + 'px'
+          element.onmouseenter = () => {
+            if (element.className.indexOf("is-active") === -1) {
+              element.style.width = (element.clientWidth + 14) + 'px'
+            }
+          }
+          element.onmouseleave = () => {
+            if (element.className.indexOf("is-active") === -1) {
+              element.style.width = (element.clientWidth - 14) + 'px'
+            }
+          }
+        })
+      })
+    })*/
     return {
       editableTabsValue,
       editableTabs,
     }
-  }
+  },
+  /*mounted() {
+    this.$nextTick(() => {
+      const elements = document.getElementsByClassName('el-tabs__item')
+      Array.prototype.forEach.call(elements, function (element) {
+        element.style.width = element.clientWidth + 'px'
+        element.onmouseenter = () => {
+          if (element.className.indexOf("is-active") === -1) element.style.width = (element.clientWidth + 14) + 'px'
+        }
+        element.onmouseleave = () => {
+          if (element.className.indexOf("is-active") === -1) element.style.width = (element.clientWidth - 14) + 'px'
+        }
+      })
+    })
+  }*/
 })
 </script>
 
@@ -182,16 +211,19 @@ export default defineComponent({
         height: 36px;
         line-height: 36px;
         border: 0;
-        margin-right: -18px;
-        padding: 0 30px;
+        margin-right: -5px;
+        //padding: 0 30px;
         text-align: center;
+        transition: all .5s cubic-bezier(.645,.045,.355,1) !important;
 
         &.is-active, &:hover, &.is-active:hover {
-          mask: url(../assets/tab-background.png);
+          /*mask: url(../assets/tab-background.png);
           -webkit-mask: url(../assets/tab-background.png);
           -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-          padding: 0 30px;
+          mask-size: 100% 100%;*/
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+          //padding: 0 30px;
         }
 
         &.is-active, &.is-active:hover {
@@ -201,7 +233,7 @@ export default defineComponent({
 
         &:hover {
           color: #515a6e;
-          background: #dee1e6;
+          background-color: #dee1e6;
           border-bottom: 0;
         }
       }

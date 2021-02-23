@@ -60,15 +60,49 @@ const asyncRoutes = [
         }
       }
     ]
+  },
+  {
+    path: "/error",
+    component: Layout,
+    redirect: "noRedirect",
+    name: "Error",
+    meta: {
+      title: "错误页"
+    },
+    children: [
+      {
+        path: "401",
+        name: "Error401",
+        component: () => import("../views/401.vue"),
+        meta: {
+          title: "401"
+        }
+      },
+      {
+        path: "404",
+        name: "Error404",
+        component: () => import("../views/404.vue"),
+        meta: {
+          title: "404"
+        }
+      }
+    ]
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-      ...routes,
-      ...constantRoutes
+      // ...routes,
+      ...constantRoutes,
+      ...asyncRoutes
   ]
+})
+
+const env = import.meta.env
+
+router.beforeEach((to) => {
+  document.title = `${to.meta.title ? to.meta.title + '-' : ''}` + env.VITE_GLOB_TITLE
 })
 
 export default router

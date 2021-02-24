@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from "@vitejs/plugin-vue-jsx"
 import { viteMockServe } from 'vite-plugin-mock'
 import { vitePlugins } from "./build/vite/plugin"
 
@@ -12,6 +13,7 @@ export default defineConfig(({ command, mode }) => {
     base: "",
     plugins: [
       vue(),
+      vueJsx(),
       viteMockServe({
         supportTs: false,
         mockPath: 'mock',

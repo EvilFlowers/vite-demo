@@ -1,15 +1,13 @@
 <template>
-  <el-menu-item :index="index">
-    <i v-if="icon" :class="[ icon.includes('fa')? 'fas' : '', icon ]"/>
-    <template #title>{{ title }}</template>
-  </el-menu-item>
+  <i v-if="icon" :class="[icon.includes('fa')? 'fas': '', icon]"/>
+  <span>{{ title }}</span>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'Item',
+  name: 'MenuTitle',
   props: {
     title: String,
     icon: String,
@@ -27,3 +25,7 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+
+</style>

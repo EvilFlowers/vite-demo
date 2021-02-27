@@ -1,8 +1,6 @@
 export default [
   {
-    url: "/home",
-    title: "Home",
-    icon: "fa-home",
+    url: "/",
     children: [
       {
         url: "index",

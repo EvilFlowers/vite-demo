@@ -1,7 +1,7 @@
 <template>
-  <el-menu-item :index="item.url" @click="handleClick">
-    <i v-if="item.icon" :class="[ item.icon.includes('fa')? 'fas' : '', item.icon ]"/>
-    <template #title>{{ item.title }}</template>
+  <el-menu-item :index="routeChildren.url" @click="handleClick(routeChildren.url)">
+    <i v-if="routeChildren.icon" :class="[ routeChildren.icon.includes('fa')? 'fas' : '', routeChildren.icon ]"/>
+    <template #title>{{ routeChildren.title }}</template>
   </el-menu-item>
 </template>
 
@@ -10,14 +10,20 @@ import { defineProps } from 'vue'
 import { useRouter, useRoute } from "vue-router"
 
 defineProps({
-  item: Object
+  item: Object,
+  routeChildren: {
+    type: Object,
+    default() {
+      return null;
+    }
+  }
 })
 
 const router = useRouter();
 const route = useRoute();
 
-const handleClick = () => {
-  router.push(item.url)
+const handleClick = (url) => {
+  router.push(url)
 }
 </script>
 

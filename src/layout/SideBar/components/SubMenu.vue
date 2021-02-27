@@ -1,15 +1,20 @@
 <template>
-  $END$
+  <el-submenu
+      :index="item.url"
+  >
+    <template #title>
+      <i v-if="item && item.icon" :class="[ 'fas', item.icon ]"></i>
+      <span>{{ item.title }}</span>
+    </template>
+    <slot />
+  </el-submenu>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import { defineProps } from 'vue'
 
-export default defineComponent({
-  name: 'SubMenu',
-  setup() {
-    return {}
-  }
+defineProps({
+  item: Object
 })
 </script>
 

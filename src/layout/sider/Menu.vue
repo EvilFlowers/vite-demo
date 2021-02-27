@@ -4,9 +4,7 @@
       <i v-if="item.icon" :class="[ item.icon && item.icon.includes('fa')? 'fas': '', item.icon]"/>
       <span>{{ item.title }}</span>
     </template>
-    <template v-for="childItem in item.children">
-      <Menu :item="childItem"/>
-    </template>
+    <Menu v-for="childItem in item.children" :item="childItem"/>
   </el-submenu>
   <el-menu-item v-else :index="item.url">
     <i v-if="item.icon" :class="[ item.icon && item.icon.includes('fa')? 'fas': '', item.icon]"/>
@@ -25,12 +23,6 @@ export default defineComponent({
       type: Object,
       default: {}
     }
-  },
-  setup(props) {
-    // console.log(props)
-    /*return {
-      item: menu
-    }*/
   }
 })
 </script>

@@ -3,7 +3,7 @@
     <div class="sidebar-container">
       <el-scrollbar>
         <el-menu>
-          <Menu v-for="item in menuList" :item="item"/>
+          <SideBarItem v-for="item in menuList" :item="item"/>
         </el-menu>
       </el-scrollbar>
     </div>
@@ -30,7 +30,6 @@
 </template>
 
 <script>
-// document.getElementById("tab-1").clientWidth
 import { defineComponent, ref, reactive, onMounted, nextTick } from 'vue'
 import SideBarItem from './SideBar/components/SideBarItem.vue'
 import menuList from "../layout/sider/menu.js"

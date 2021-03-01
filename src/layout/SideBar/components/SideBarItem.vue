@@ -2,12 +2,14 @@
   <component
       :is="menuComponent"
       :item="item"
+      :full-path="fullPath + item.url"
   >
     <template v-if="item.children && item.children.length">
       <SideBarItem
           v-for="route in item.children"
-          :key="route.url"
+          :key="fullPath + route.url"
           :item="route"
+          :full-path="fullPath + item.url"
       />
     </template>
   </component>
@@ -19,7 +21,11 @@ import { defineComponent, onMounted, reactive } from 'vue'
 export default defineComponent({
   name: 'SideBarItem',
   props: {
-    item: Object
+    item: Object,
+    fullPath: {
+      type: String,
+      default: ""
+    }
   },
   setup(props) {
     let routeChildren = {};
@@ -47,21 +53,6 @@ export default defineComponent({
       return false
     }
 
-    onMounted(() => {
-      // console.log(props.item)
-      console.log(routeChildren)
-    })
-
-/*    const menuComponent = () => {
-      if (handleChildren(this.item.children, this.item) && (
-          !routeChildren.children || routeChildren.notShowChildren
-      )) {
-        return "MenuItem";
-      } else {
-        return "SubMenu"
-      }
-    }*/
-
     return {
       handleChildren,
       routeChildren
@@ -69,15 +60,23 @@ export default defineComponent({
   },
   computed: {
     menuComponent() {
-      // console.log(this.handleChildren)
-      if (this.handleChildren(this.item.children, this.item) && (
+      /*if (this.handleChildren(this.item.children, this.item) && (
           !this.routeChildren.children || this.routeChildren.notShowChildren
       )) {
         return "MenuItem";
       } else {
         return "SubMenu"
+      }*/
+
+      if (this.item.children) {
+        return "SubMenu"
+      } else {
+        return "MenuItem"
       }
     }
+  },
+  mounted() {
+    console.log(this.fullPath)
   }
 })
 </script>

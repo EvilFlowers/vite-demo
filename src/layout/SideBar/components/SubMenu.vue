@@ -1,6 +1,6 @@
 <template>
   <el-submenu
-      :index="item.url"
+      :index="fullPath"
   >
     <template #title>
       <i v-if="item && item.icon" :class="[ 'fas', item.icon ]"></i>
@@ -14,7 +14,11 @@
 import { defineProps } from 'vue'
 
 defineProps({
-  item: Object
+  item: Object,
+  fullPath: {
+    type: String,
+    default: ""
+  }
 })
 </script>
 

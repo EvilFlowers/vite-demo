@@ -93,8 +93,8 @@ const asyncRoutes = [
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-      // ...routes,
-      ...constantRoutes,
+      ...routes,
+      // ...constantRoutes,
       ...asyncRoutes
   ]
 })

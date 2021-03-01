@@ -1,6 +1,8 @@
 export default [
   {
     url: "/",
+    title: "Home",
+    icon: "fa-camera",
     children: [
       {
         url: "index",
@@ -15,12 +17,24 @@ export default [
     icon: "fa-bug",
     children: [
       {
-        url: "401",
+        url: "/401",
         title: "401",
-        icon: ""
+        icon: "",
+        children: [
+          {
+            url: "/1",
+            title: "401-1",
+            icon: "fa-dice-one"
+          },
+          {
+            url: "/2",
+            title: "401-2",
+            icon: "fa-dice-two"
+          }
+        ]
       },
       {
-        url: "404",
+        url: "/404",
         title: "404",
         icon: ""
       }

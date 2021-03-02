@@ -1,13 +1,7 @@
 <template>
   <div class="admin-layout">
-    <div class="sidebar-container">
-      <el-scrollbar>
-        <el-menu>
-          <SideBarItem v-for="item in menuList" :item="item"/>
-        </el-menu>
-      </el-scrollbar>
-    </div>
-    <div class="main-container">
+    <SideBar/>
+    <div class="main-container" :class="{'is-collapse-main': collapse}">
       <div class="layout-header">
         <div class="nav">Navbar</div>
         <div class="tabs">
@@ -34,11 +28,13 @@ import { defineComponent, ref, reactive, onMounted, nextTick } from 'vue'
 import SideBarItem from './SideBar/components/SideBarItem.vue'
 import menuList from "../layout/sider/menu.js"
 import Menu from './sider/Menu.vue'
+import SideBar from './SideBar/index.vue'
 
 export default defineComponent({
   name: 'Layout',
-  components: { Menu, SideBarItem },
+  components: { SideBar, Menu, SideBarItem },
   setup() {
+    const collapse = ref(true)
     const editableTabsValue = ref('2')
     const editableTabs = reactive([
       {
@@ -105,7 +101,8 @@ export default defineComponent({
     return {
       editableTabsValue,
       editableTabs,
-      menuList
+      menuList,
+      collapse
     }
   },
   /*mounted() {
@@ -134,21 +131,27 @@ export default defineComponent({
   margin-left: 220px;
   height: 100%;
   padding-top: 100px;
+
+  &.is-collapse-main {
+    margin-left: 64px;
+  }
+
+  .layout-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 64px;
+    width: calc(100% - 64px);
+    overflow: hidden;
+    z-index: 2001;
+  }
 }
 .nav {
   height: 55px;
   //background-color: #fff;
 }
 
-.layout-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 220px;
-  width: calc(100% - 220px);
-  overflow: hidden;
-  z-index: 2001;
-}
+
 
 .tabs {
   position: relative;
@@ -217,12 +220,4 @@ export default defineComponent({
   }
 }
 
-
-
-.sidebar-container {
-  width: 220px;
-  height: 100%;
-  position: fixed;
-  top: 0;
-}
 </style>

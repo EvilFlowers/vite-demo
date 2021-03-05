@@ -25,12 +25,24 @@
     </div>
     <div class="nav-right">
       <i :class="['fas', isFullScreen ? 'fa-compress-arrows-alt' : 'fa-expand-arrows-alt']" @click="handleFull"></i>
+      <i class="fas fa-sync-alt" @click="handleFull"></i>
+      <el-avatar size="large" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+      <el-dropdown>
+        <span>内置管理员<i class="el-icon-arrow-down"></i></span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>github地址</el-dropdown-item>
+            <el-dropdown-item>退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, toRefs } from 'vue'
+import screenfull from "screenfull"
 
 export default defineComponent({
   name: 'NavBar',
@@ -48,7 +60,8 @@ export default defineComponent({
   computed: {
     classObj() {
       return [
-          'indent-outdent',
+          // 'indent-outdent',
+          'fa-lg',
           'fas',
           this.collapse ? 'fa-indent' : 'fa-outdent'
       ]
@@ -60,7 +73,7 @@ export default defineComponent({
     },
     handleFull() {
       this.isFullScreen = !this.isFullScreen
-
+      screenfull.toggle()
     }
   }
 })
@@ -88,7 +101,7 @@ export default defineComponent({
   .nav-right {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     height: $base-nav-height;
     flex: 2;
   }

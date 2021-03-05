@@ -7,15 +7,19 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, toRefs } from 'vue'
 import SideBarItem from './components/SideBarItem.vue'
 import menuList from "../../layout/sider/menu.js"
 
 export default defineComponent({
   name: 'SideBar',
   components: { SideBarItem },
-  setup() {
-    const collapse = ref(true)
+  props: {
+    collapse: Boolean
+  },
+  setup(props) {
+    // const collapse = ref(true)
+    const { collapse } = toRefs(props)
     return {
       collapse,
       menuList
@@ -27,13 +31,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 .sidebar-container {
-  width: 220px;
+  width: $base-left-menu-width;
   height: 100%;
   position: fixed;
   top: 0;
+  transition: width .3s;
 
   &.is-collapse {
-    width: 64px;
+    width: $base-left-menu-width-min;
+
+    .el-menu {
+      transition: width .3s;
+    }
   }
 
   .el-menu {

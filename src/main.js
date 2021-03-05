@@ -6,6 +6,7 @@ import router from "./router"
 import "@fortawesome/fontawesome-free/css/all.css"
 
 import "./styles/index.scss"
+// import "./styles/variables.scss"
 
 const app = createApp(App)
 installElementPlus(app)

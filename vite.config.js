@@ -32,6 +32,13 @@ export default defineConfig(({ command, mode }) => {
           rewrite: path => path.replace(/^\/admin/, "")
         }
       }
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@import "src/styles/variables.scss";'
+        }
+      }
     }
   }
 })

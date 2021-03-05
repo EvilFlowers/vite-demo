@@ -19,7 +19,6 @@
     "@vue/compiler-sfc": "^3.0.5",
     "mockjs": "^1.1.0",
     "sass": "^1.32.8",
-    "sass-loader": "^11.0.1",
     "vite": "^2.0.0",
     "vite-plugin-html": "^2.0.2",
     "vite-plugin-mock": "^2.1.4"

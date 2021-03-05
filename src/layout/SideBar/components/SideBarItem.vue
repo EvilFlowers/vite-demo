@@ -75,9 +75,6 @@ export default defineComponent({
       }
     }
   },
-  mounted() {
-    console.log(this.fullPath)
-  }
 })
 </script>
 

@@ -1,9 +1,12 @@
 <template>
   <div class="admin-layout">
-    <SideBar/>
+    <SideBar :collapse="collapse"/>
     <div class="main-container" :class="{'is-collapse-main': collapse}">
       <div class="layout-header">
-        <div class="nav">Navbar</div>
+        <div class="nav">
+          <NavBar :collapse="collapse"  @handle-collapse="handleCollapse" />
+<!--          <el-button type="primary" @click="collapse = !collapse">切换</el-button>-->
+        </div>
         <div class="tabs">
           <el-tabs v-model="editableTabsValue" type="card" class="tabs-content" closable>
             <el-tab-pane
@@ -29,10 +32,11 @@ import SideBarItem from './SideBar/components/SideBarItem.vue'
 import menuList from "../layout/sider/menu.js"
 import Menu from './sider/Menu.vue'
 import SideBar from './SideBar/index.vue'
+import NavBar from './NavBar/index.vue'
 
 export default defineComponent({
   name: 'Layout',
-  components: { SideBar, Menu, SideBarItem },
+  components: { NavBar, SideBar, Menu, SideBarItem },
   setup() {
     const collapse = ref(true)
     const editableTabsValue = ref('2')
@@ -119,6 +123,11 @@ export default defineComponent({
       })
     })
   }*/
+  methods: {
+    handleCollapse() {
+      this.collapse = !this.collapse
+    }
+  }
 })
 </script>
 
@@ -128,26 +137,35 @@ export default defineComponent({
 }
 
 .main-container {
-  margin-left: 220px;
+  margin-left: $base-left-menu-width;
   height: 100%;
-  padding-top: 100px;
+  padding-top: calc(#{$base-nav-height} + #{$base-tabs-height});
+  transition: margin-left .3s;
 
   &.is-collapse-main {
-    margin-left: 64px;
+    margin-left: $base-left-menu-width-min;
+    transition: margin-left .3s;
+
+    .layout-header {
+      left: $base-left-menu-width-min;
+      width: $base-right-content-width-min;
+      transition: all .3s;
+    }
   }
 
   .layout-header {
     position: fixed;
     top: 0;
     right: 0;
-    left: 64px;
-    width: calc(100% - 64px);
+    left: $base-left-menu-width;
+    width: $base-right-content-width;
     overflow: hidden;
     z-index: 2001;
+    transition: all .3s;
   }
 }
 .nav {
-  height: 55px;
+  height: $base-nav-height;
   //background-color: #fff;
 }
 
@@ -160,7 +178,7 @@ export default defineComponent({
   align-content: center;
   align-items: center;
   justify-content: space-between;
-  height: 45px;
+  height: $base-tabs-height;
   padding-right: 20px;
   padding-left: 20px;
   -webkit-user-select: none;

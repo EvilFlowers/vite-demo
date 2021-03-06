@@ -24,8 +24,8 @@
       </el-breadcrumb>
     </div>
     <div class="nav-right">
-      <i :class="['fas', isFullScreen ? 'fa-compress-arrows-alt' : 'fa-expand-arrows-alt']" @click="handleFull"></i>
-      <i class="fas fa-sync-alt" @click="handleFull"></i>
+      <i :class="['fas', isFullscreen ? 'fa-compress-arrows-alt' : 'fa-expand-arrows-alt']" @click="handleFull"></i>
+      <i class="fas fa-sync-alt" @click="handleRefresh"></i>
       <el-avatar size="large" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
       <el-dropdown>
         <span>内置管理员<i class="el-icon-arrow-down"></i></span>
@@ -51,10 +51,16 @@ export default defineComponent({
   },
   setup(props) {
     const { collapse } = toRefs(props)
-    const isFullScreen = ref(false)
+    let isFullscreen = ref(false)
+
+    const handleFull = () => {
+      isFullscreen.value = !isFullscreen.value
+      screenfull.toggle()
+    }
     return {
       collapse,
-      isFullScreen
+      isFullscreen,
+      handleFull
     }
   },
   computed: {
@@ -69,11 +75,11 @@ export default defineComponent({
   },
   methods: {
     handleCollapse() {
-      this.$emit('handle-collapse')
+      this.$emit('collapse')
     },
-    handleFull() {
-      this.isFullScreen = !this.isFullScreen
-      screenfull.toggle()
+    handleRefresh() {
+      console.log('refresh')
+      this.$emit('refresh')
     }
   }
 })
@@ -85,13 +91,13 @@ export default defineComponent({
   margin-left: 20px;
   height: $base-nav-height;
   display: flex;
+  justify-content: space-between;
 
   .nav-left {
     display: flex;
     align-items: center;
     justify-content: start;
     height: $base-nav-height;
-    flex: 1;
 
     .indent-outdent {
       font-size: 20px;
@@ -103,7 +109,7 @@ export default defineComponent({
     align-items: center;
     justify-content: flex-end;
     height: $base-nav-height;
-    flex: 2;
+    margin-right: 20px;
   }
 }
 </style>

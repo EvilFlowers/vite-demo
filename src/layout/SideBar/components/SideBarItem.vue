@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, reactive } from 'vue'
+import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
 
 export default defineComponent({
   name: 'SideBarItem',
@@ -28,6 +28,7 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const { item } = toRefs(props)
     let routeChildren = {};
     const handleChildren = (children = [], parent) => {
       const showChildren = children.filter((item) => {
@@ -53,28 +54,16 @@ export default defineComponent({
       return false
     }
 
+    let menuComponent = computed(() => {
+      return item.value.children ? "SubMenu" : "MenuItem"
+    })
+
     return {
       handleChildren,
-      routeChildren
+      routeChildren,
+      menuComponent
     }
-  },
-  computed: {
-    menuComponent() {
-      /*if (this.handleChildren(this.item.children, this.item) && (
-          !this.routeChildren.children || this.routeChildren.notShowChildren
-      )) {
-        return "MenuItem";
-      } else {
-        return "SubMenu"
-      }*/
-
-      if (this.item.children) {
-        return "SubMenu"
-      } else {
-        return "MenuItem"
-      }
-    }
-  },
+  }
 })
 </script>
 

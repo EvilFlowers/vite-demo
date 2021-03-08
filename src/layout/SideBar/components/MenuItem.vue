@@ -1,5 +1,5 @@
 <template>
-  <el-menu-item :index="fullPath" @click="handleClick(fullPath)">
+  <el-menu-item :index="fullPath" @click.self="handleClick(fullPath)">
     <i v-if="item.icon" :class="[ item.icon.includes('fa')? 'fas' : '', item.icon ]"/>
     <template #title>{{ item.title }}</template>
   </el-menu-item>
@@ -18,6 +18,7 @@ const router = useRouter();
 const route = useRoute();
 
 const handleClick = (url) => {
+  console.log(event)
   router.push(url)
 }
 </script>

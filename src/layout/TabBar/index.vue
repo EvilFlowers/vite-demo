@@ -1,30 +1,35 @@
 <template>
   <div class="tabs">
-
-  <el-tabs v-model="editableTabsValue" type="card" class="tabs-content" closable>
-    <el-tab-pane
-        v-for="item in editableTabs"
-        :key="item.name"
-        :label="item.title"
-        :name="item.name"
-    >
-    </el-tab-pane>
-  </el-tabs>
-  <div style="display: none">
-    <el-dropdown-menu>
-      <el-dropdown-item>重新加载</el-dropdown-item>
-      <el-dropdown-item>关闭当前</el-dropdown-item>
-      <el-dropdown-item>关闭左侧</el-dropdown-item>
-      <el-dropdown-item>关闭右侧</el-dropdown-item>
-      <el-dropdown-item>关闭其他</el-dropdown-item>
-      <el-dropdown-item>关闭全部</el-dropdown-item>
-    </el-dropdown-menu>
-  </div>
+    <el-tabs v-model="editableTabsValue" type="card" class="tabs-content" closable>
+      <el-tab-pane
+          v-for="item in editableTabs"
+          :key="item.name"
+          :name="item.name"
+      >
+        <template #label>
+          <span @contextmenu.prevent="openMenu">{{ item.title }}</span>
+        </template>
+      </el-tab-pane>
+    </el-tabs>
+    <teleport to="body">
+      <div v-show="menuVisible" style="position: fixed; z-index: 2001" :style="{'left': left + 'px', 'top': top + 'px'}">
+        <el-dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="$emit('refresh')">重新加载</el-dropdown-item>
+            <el-dropdown-item>关闭当前</el-dropdown-item>
+            <el-dropdown-item>关闭左侧</el-dropdown-item>
+            <el-dropdown-item>关闭右侧</el-dropdown-item>
+            <el-dropdown-item>关闭其他</el-dropdown-item>
+            <el-dropdown-item>关闭全部</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </teleport>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
 export default defineComponent({
   name: 'TabBar',
@@ -33,8 +38,35 @@ export default defineComponent({
   },
   setup() {
     const editableTabsValue = ref('')
+
+    const menuVisible = ref(false)
+    const top = ref(0)
+    const left = ref(0)
+    const openMenu = (e) => {
+      left.value = e.clientX
+      top.value = e.clientY
+      // menuVisible.value = value
+      menuVisible.value = true
+    }
+
+    const closeMenu = () => {
+      // console.log('clickScreen')
+      menuVisible.value = false
+    }
+
+    watch(menuVisible, (value) => {
+      if (value) {
+        window.addEventListener('click', closeMenu)
+      } else {
+        window.removeEventListener('click', closeMenu)
+      }
+    })
     return {
-      editableTabsValue
+      editableTabsValue,
+      openMenu,
+      menuVisible,
+      top,
+      left
     }
   }
 })

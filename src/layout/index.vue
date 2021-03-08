@@ -6,7 +6,7 @@
         <div class="nav">
           <NavBar :collapse="collapse"  @collapse="handleCollapse" @refresh="handleRefresh" />
         </div>
-        <TabBar :editable-tabs="editableTabs" />
+        <TabBar :editable-tabs="editableTabs" @refresh="handleRefresh" />
       </div>
       <Main v-if="showMain" />
     </div>
@@ -37,9 +37,7 @@ export default defineComponent({
     const handleRefresh = async () => {
       showMain.value = false
       await nextTick()
-      console.log(showMain.value)
       showMain.value = true
-      console.log(showMain.value)
     }
     const editableTabsValue = ref('2')
     const editableTabs = reactive([

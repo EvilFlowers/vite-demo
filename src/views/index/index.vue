@@ -16,10 +16,14 @@
 
 <script>
 import { defineComponent, reactive, ref } from 'vue'
+import { useStore } from "vuex"
 
 export default defineComponent({
   name: 'Index',
   setup() {
+    const store = useStore()
+    console.log(store)
+    console.log(store.getters['tabsBar/visitedRoutes'])
   }
 })
 </script>

@@ -6,7 +6,7 @@
         <div class="nav">
           <NavBar :collapse="collapse"  @collapse="handleCollapse" @refresh="handleRefresh" />
         </div>
-        <TabBar :editable-tabs="editableTabs" @refresh="handleRefresh" />
+        <TabBar @refresh="handleRefresh" />
       </div>
       <Main v-if="showMain" />
     </div>
@@ -27,7 +27,7 @@ export default defineComponent({
   name: 'Layout',
   components: { TabBar, NavBar, SideBar, Menu, SideBarItem, Main },
   setup() {
-    const collapse = ref(true)
+    const collapse = ref(false)
     const showMain = ref(true)
 
     const handleCollapse = () => {

@@ -1,13 +1,13 @@
 <template>
   <div class="tabs">
-    <el-tabs v-model="editableTabsValue" type="card" class="tabs-content" closable>
+    <el-tabs v-model="selectTab" type="card" class="tabs-content" closable>
       <el-tab-pane
-          v-for="item in editableTabs"
-          :key="item.name"
+          v-for="item in visitedRoutes"
+          :key="item.path"
           :name="item.name"
       >
         <template #label>
-          <span @contextmenu.prevent="openMenu">{{ item.title }}</span>
+          <span @contextmenu.prevent="openMenu(item, e)">{{ item.meta.title }}</span>
         </template>
       </el-tab-pane>
     </el-tabs>
@@ -16,11 +16,11 @@
         <el-dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="$emit('refresh')">重新加载</el-dropdown-item>
-            <el-dropdown-item>关闭当前</el-dropdown-item>
-            <el-dropdown-item>关闭左侧</el-dropdown-item>
-            <el-dropdown-item>关闭右侧</el-dropdown-item>
-            <el-dropdown-item>关闭其他</el-dropdown-item>
-            <el-dropdown-item>关闭全部</el-dropdown-item>
+            <el-dropdown-item @click="closeSelectTab">关闭当前</el-dropdown-item>
+            <el-dropdown-item @click="closeLeftTabs">关闭左侧</el-dropdown-item>
+            <el-dropdown-item @click="closeRightTabs">关闭右侧</el-dropdown-item>
+            <el-dropdown-item @click="closeOtherTabs">关闭其他</el-dropdown-item>
+            <el-dropdown-item @click="closeAllTabs">关闭全部</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -29,30 +29,31 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, reactive, ref, watch } from 'vue'
+import { useStore } from "vuex"
+import { useRoute, useRouter } from "vue-router"
 
 export default defineComponent({
   name: 'TabBar',
-  props: {
-    editableTabs: Array
-  },
   setup() {
-    const editableTabsValue = ref('')
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+
+    const affixTabs = reactive([])
+    const selectTab = ref("")
 
     const menuVisible = ref(false)
     const top = ref(0)
     const left = ref(0)
-    const openMenu = (e) => {
+    const openMenu = (item, e) => {
       left.value = e.clientX
       top.value = e.clientY
-      // menuVisible.value = value
       menuVisible.value = true
+      selectTab.value = item.path
     }
 
-    const closeMenu = () => {
-      // console.log('clickScreen')
-      menuVisible.value = false
-    }
+    const closeMenu = () => { menuVisible.value = false }
 
     watch(menuVisible, (value) => {
       if (value) {
@@ -61,12 +62,73 @@ export default defineComponent({
         window.removeEventListener('click', closeMenu)
       }
     })
+
+    const isActive = (tab) => (tab.path === route.path)
+
+    const visitedRoutes = computed(() => store.getters['tabsBar/visitedRoutes'])
+
+    const closeLeftTabs = async () => {
+      const view = await toThisTab()
+      await store.dispatch("tabsBar/delLeftRoutes", view)
+    }
+
+    const closeRightTabs = async () => {
+      const view = await toThisTab()
+      await store.dispatch("tabsBar/closeRightRoutes", view)
+    }
+
+    const closeOtherTabs = async () => {
+      const view = await toThisTab()
+      await store.dispatch("tabsBar/delOtherRoutes", view)
+    }
+
+    const closeAllTabs = async () => {
+      const view = await toThisTab()
+      const { visitedRoutes } = await store.dispatch("tabsBar/delAllRoutes")
+      if (affixTabs.some(tab => tab.path === view.path)) {
+        return;
+      }
+      toLastTab(visitedRoutes, view)
+    }
+
+    const closeSelectTab = async (view) => {
+      const { visitedRoutes } = await store.dispatch("tabsBar/delRoute", view)
+      if (isActive(view)) {
+        toLastTab(visitedRoutes, view)
+      }
+    }
+
+    const toLastTab = (visitedRoutes, view) => {
+      const latestView = visitedRoutes.slice(-1)[0]
+      if (latestView) {
+        router.push(latestView)
+      } else {
+        router.push("/")
+      }
+    }
+
+    const toThisTab = () => {
+      const view = visitedRoutes.filter(item => {
+        if (item.path === route.fullPath) {
+          return item
+        }
+      })[0]
+      if (route.path !== view.path) router.push(view)
+      return view
+    }
+
     return {
-      editableTabsValue,
       openMenu,
       menuVisible,
       top,
-      left
+      left,
+      selectTab,
+      closeLeftTabs,
+      closeRightTabs,
+      closeOtherTabs,
+      closeAllTabs,
+      closeSelectTab,
+      visitedRoutes
     }
   }
 })

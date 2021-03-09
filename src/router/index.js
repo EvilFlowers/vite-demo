@@ -19,7 +19,7 @@ const routes = [
 
 ]
 
-const constantRoutes = [
+export const constantRoutes = [
   {
     path: "/login",
     component: () => import("../views/login/index.vue"),
@@ -44,7 +44,7 @@ const constantRoutes = [
   }
 ]
 
-const asyncRoutes = [
+export const asyncRoutes = [
   {
     path: "/",
     component: Layout,
@@ -57,6 +57,24 @@ const asyncRoutes = [
         meta: {
           title: "首页",
           affix: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/lm",
+    component: Layout,
+    name: "LM",
+    meta: {
+      title: "组件"
+    },
+    children: [
+      {
+        path: "table",
+        name: "Table",
+        component: () => import("../views/lm/table/index.vue"),
+        meta: {
+          title: "表格"
         }
       }
     ]

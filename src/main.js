@@ -4,6 +4,8 @@ import installElementPlus from './plugins/element-plus';
 import layout from "./layout/export"
 import router from "./router"
 import store from "./store"
+import * as lodash from "lodash"
+
 import "@fortawesome/fontawesome-free/css/all.css"
 
 import "./styles/index.scss"
